@@ -1,0 +1,44 @@
+Customer ID,Customer Name,Customer Title,Customer First Name,Customer Last Name,Customer Segment,Marital Status,Start_Dt_Marital_Status,End_Dt_Marital_Status
+188,Mrs. ALEX harrell,Mrs.,ALEX,harrell,Corporate,Single,2024-04-11,2024-04-12
+188,Mrs. AlEx harrell,Mrs.,AlEx,harrell,Corporate,Married,2024-04-12,2024-04-13
+188,Mrs. Alex Harrell,Mrs.,Alex,Harrell,Corporate,Divorced,2024-04-13,2099-12-31
+522,Miss. Alice Coley,Miss.,Alice,Coley,Small Business,Married,2024-04-11,2024-04-13
+522,Miss. Alice Coley,Miss.,Alice,Coley,Small Business,Divorced,2024-04-13,2099-12-31
+597,Mr. AlexandrA WISE,Mr.,AlexandrA,WISE,Small Business,Divorced,2024-04-11,2024-04-12
+597,Mr. AleXandra WISE,Mr.,AleXandra,WISE,Small Business,Remarried,2024-04-12,2024-04-13
+597,Mr. Alexandra Wise,Mr.,Alexandra,Wise,Small Business,Married,2024-04-13,2099-12-31
+674,Mr AlBERT FROST,Mr,AlBERT,FROST,Small Business,Divorced,2024-04-11,2024-04-12
+674,Mr aLBERT frosT,Mr,aLBERT,frosT,Small Business,Remarried,2024-04-12,2024-04-13
+674,Mr Albert Frost,Mr,Albert,Frost,Small Business,Married,2024-04-13,2099-12-31
+697,Mister. Adam G Sawyer,Mister.,Adam,Sawyer,Corporate,Married,2024-04-11,2024-04-12
+697,Mister. aDAM G sawyer,Mister.,aDAM,sawyer,Corporate,Divorced,2024-04-12,2024-04-13
+697,Mister. Adam G Sawyer,Mister.,Adam,Sawyer,Corporate,Remarried,2024-04-13,2099-12-31
+1155,Dr. Debra Proctor,Dr.,Debra,Proctor,Consumer,Single,2024-04-11,2024-04-12
+1155,Dr. Debra Proctor,Dr.,Debra,Proctor,Consumer,Married,2024-04-12,2024-04-13
+1155,Dr. Debra Proctor,Dr.,Debra,Proctor,Consumer,Divorced,2024-04-13,2099-12-31
+1315,Prof. Denise McIntosh,Prof.,Denise,McIntosh,Home Office,Divorced,2024-04-11,2024-04-12
+1315,Prof. Denise McIntosh,Prof.,Denise,McIntosh,Home Office,Remarried,2024-04-12,2024-04-13
+1315,Prof. Denise McIntosh,Prof.,Denise,McIntosh,Home Office,Single,2024-04-13,2099-12-31
+1354,Mr. AARON Dillon,Mr.,AARON,Dillon,Consumer,Single,2024-04-11,2024-04-12
+1354,Mr. AARON DILLON,Mr.,AARON,DILLON,Consumer,Married,2024-04-12,2024-04-13
+1354,Mr. Aaron Dillon,Mr.,Aaron,Dillon,Consumer,Divorced,2024-04-13,2099-12-31
+1627,Doctor. Sam Woodward,Doctor.,Sam,Woodward,Corporate,Single,2024-04-11,2024-04-12
+1627,Doctor. Sam Woodward,Doctor.,Sam,Woodward,Corporate,Married,2024-04-12,2024-04-13
+1627,Doctor. Sam Woodward,Doctor.,Sam,Woodward,Corporate,Divorced,2024-04-13,2099-12-31
+1814,Dr. Danielle Schneider,Dr.,Danielle,Schneider,Home Office,Married,2024-04-11,2024-04-12
+1814,Dr. Danielle Schneider,Dr.,Danielle,Schneider,Home Office,Divorced,2024-04-12,2024-04-13
+1814,Dr. Danielle Schneider,Dr.,Danielle,Schneider,Home Office,Remarried,2024-04-13,2099-12-31
+2062,Doctor. Kelly Collins,Doctor.,Kelly,Collins,Corporate,Divorced,2024-04-11,2024-04-12
+2062,Doctor. Kelly Collins,Doctor.,Kelly,Collins,Corporate,Remarried,2024-04-12,2024-04-13
+2062,Doctor. Kelly Collins,Doctor.,Kelly,Collins,Corporate,Single,2024-04-13,2099-12-31
+2108,Mr. Alfred Barber,Mr.,Alfred,Barber,Corporate,Single,2024-04-11,2024-04-12
+2108,Mr. Alfred BARBER,Mr.,Alfred,BARBER,Corporate,Married,2024-04-12,2024-04-13
+2108,Mr. Alfred Barber,Mr.,Alfred,Barber,Corporate,Divorced,2024-04-13,2099-12-31
+2345,Doctor. Marvin Parrott,Doctor.,Marvin,Parrott,Corporate,Single,2024-04-11,2024-04-13
+2345,Doctor. Marvin Parrott,Doctor.,Marvin,Parrott,Consumer,Married,2024-04-13,2099-12-31
+3106,Mistress. AleXander O'Brien,Mistress.,AleXander,O'Brien,Home Office,Married,2024-04-11,2024-04-12
+3106,Mistress. AlexandeR O'Brien,Mistress.,AlexandeR,O'Brien,Home Office,Divorced,2024-04-12,2024-04-13
+3106,Mr. Alexander O'Brien,Mr.,Alexander,O'Brien,Home Office,Remarried,2024-04-13,2099-12-31
+3388,Prof. Andrea Shaw,Prof.,Andrea,Shaw,Corporate,Married,2024-04-11,2024-04-12
+3388,Prof. Andrea Shaw,Prof.,Andrea,Shaw,Corporate,Divorced,2024-04-12,2024-04-13
+3388,Prof. Andrea Shaw,Prof.,Andrea,Shaw,Corporate,Remarried,2024-04-13,2099-12-31

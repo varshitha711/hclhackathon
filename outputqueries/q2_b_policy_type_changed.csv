@@ -1,0 +1,17 @@
+Customer Id,Customer Name,Previous Policy Type,Previous Policy Type Id,Previous Policy Type Desc,Current Policy Type,Current Policy Type Id,Current Policy Type Desc
+188,Mrs. Alex Harrell,Moneyback,19184.0,The insured person gets a percentage of sum assured at regular intervals,UnitLinked,19186.0,Market-linked product that aggregates the very best of investment and insurance
+522,Miss. Alice Coley,WholeLife,19182.0,Remain in force for the insured's entire lifetime,Endowment,19183.0,Pay a lump sum on its maturity or on death.
+597,Mr. Alexandra Wise,UnitLinked,19186.0,Market-linked product that aggregates the very best of investment and insurance,TermLife,19181.0,Coverage for a certain period of time
+674,Mr Albert Frost,Endowment,19183.0,Pay a lump sum on its maturity or on death.,ChildPlan,19185.0,Insurance cum investment plan to secure child's future
+697,Mister. Adam G Sawyer,WholeLife,19182.0,Remain in force for the insured's entire lifetime,Moneyback,19184.0,The insured person gets a percentage of sum assured at regular intervals
+1155,Dr. Debra Proctor,AnnuityPlan,19187.0,Income stream for retirees,TermLife,19181.0,Coverage for a certain period of time
+1315,Prof. Denise McIntosh,UnitLinked,19186.0,Market-linked product that aggregates the very best of investment and insurance,AnnuityPlan,19187.0,Income stream for retirees
+1354,Mr. Aaron Dillon,TermLife,19181.0,Coverage for a certain period of time,Endowment,19183.0,Pay a lump sum on its maturity or on death.
+1627,Doctor. Sam Woodward,WholeLife,19182.0,Remain in force for the insured's entire lifetime,Endowment,19183.0,Pay a lump sum on its maturity or on death.
+1814,Dr. Danielle Schneider,Endowment,19183.0,Pay a lump sum on its maturity or on death.,Moneyback,19184.0,The insured person gets a percentage of sum assured at regular intervals
+2062,Doctor. Kelly Collins,UnitLinked,19186.0,Market-linked product that aggregates the very best of investment and insurance,AnnuityPlan,19187.0,Income stream for retirees
+2108,Mr. Alfred Barber,AnnuityPlan,19187.0,Income stream for retirees,WholeLife,19182.0,Remain in force for the insured's entire lifetime
+2345,Doctor. Marvin Parrott,Auto,98765.0,Related to 4 wheelers or 3 wheelers or 2 wheelers Claims,AnnuityPlan,19187.0,Income stream for retirees
+3106,Mr. Alexander O'Brien,ChildPlan,19185.0,Insurance cum investment plan to secure child's future,AnnuityPlan,19187.0,Income stream for retirees
+3320,Professor Bob Gibson,AnnuityPlan,19187.0,Income stream for retirees,WholeLife,19182.0,Remain in force for the insured's entire lifetime
+3388,Prof. Andrea Shaw,ChildPlan,19185.0,Insurance cum investment plan to secure child's future,UnitLinked,19186.0,Market-linked product that aggregates the very best of investment and insurance
