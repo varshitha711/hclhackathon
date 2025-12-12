@@ -1,0 +1,15 @@
+policy_type_sk,policy_type_id,policy_type,policy_type_desc
+3,19181,TermLife,Coverage for a certain period of time
+4,19182,WholeLife,Remain in force for the insured's entire lifetime
+5,19183,Endowment,Pay a lump sum on its maturity or on death.
+6,19184,Moneyback,The insured person gets a percentage of sum assured at regular intervals
+7,19185,ChildPlan,Insurance cum investment plan to secure child's future
+8,19186,UnitLinked,Market-linked product that aggregates the very best of investment and insurance
+9,19187,AnnuityPlan,Income stream for retirees
+2,13579,Mediclaim,Related to Life or Personal Claim
+1,12468,Mortgages,"Related to Ornaments, Property Claim"
+12,98765,Auto,Related to 4 wheelers or 3 wheelers or 2 wheelers Claims
+10,2468,Mortgages,"Related to Ornaments, Property Claim"
+13,99999,TermLife,Coverage for a certain period of time
+11,88888,TermLife,Coverage for a certain period of time
+14,,1/0/1900,U.S
