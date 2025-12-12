@@ -322,16 +322,6 @@ Files:
 We used surrogate keys and hash-based SCD Type-2 to track historical changes for customers and policies.
 Finally, using this DWH, we delivered all required analytical reports (b–f) accurately and efficiently.”**
 
-This is short, crisp, and perfect for judges.
 
----
-
-If you'd like, I can also generate:
-
-✅ ER Diagram
-✅ Architecture Diagram
-✅ Process Flow Diagram
-✅ Visual PPT for submission
-✅ Viva question bank with answers
 
 Just tell me!
