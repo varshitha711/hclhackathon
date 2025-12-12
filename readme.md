@@ -1,22 +1,33 @@
 
- **Insurance Policy Data Engineering Pipeline — Hackathon Submission**
 
- **1. Project Overview**
+#  Insurance Policy Data Engineering Pipeline (Hackathon Submission)
 
-This project implements an end-to-end **Data Engineering Pipeline** for ABC Insurance.
-Each day, 4 regional ZIP files (East, West, North, South) are provided with customer, policy, address, and transaction data.
+## 1. Project Overview
 
-Our objective:
+This project implements a complete **end-to-end Data Engineering Pipeline** for ABC Insurance based on the provided problem statement.
 
-* **Combine all regions & all days into a unified data model**
-* **Clean and standardize the raw data**
-* **Build a proper Data Warehouse with SCD Type-2 dimensions**
-* **Use surrogate keys & hashing for record tracking**
-* **Produce analytical outputs (Queries b–f)** exactly as required in the problem statement
+Each day, ABC Insurance receives **four regional datasets**:
+
+* East
+* West
+* North
+* South
+
+Each region sends daily CSV files containing **customer**, **policy**, **address**, and **premium transaction** information.
+
+### **Hackathon Goal**
+
+To build a professional Data Engineering solution that:
+
+* Ingests and merges all regional + daily files
+* Cleans and standardizes data into a canonical structure
+* Builds a **Star Schema Data Warehouse**
+* Implements **SCD Type-2** to maintain historical changes
+* Generates required analytic outputs for **queries (b–f)**
 
 ---
 
- **2. Step 1 — Data Ingestion (Merging the 4 Region ZIP Files)**
+# 2. Step 1 — Data Ingestion (Merging 4 Regional ZIP Files)
 
 We ingest the following ZIP files:
 
@@ -26,113 +37,77 @@ Insurance_details_US_West_day.zip
 Insurance_details_US_North_day.zip
 Insurance_details_US_South_day.zip
 ```
- **Process:**
 
-* Automatically detect these ZIP files from `/content`.
-* Extract all CSVs inside them.
-* Detect the **region** and **snapshot day** from each filename.
-* Combine everything into a single dataset with metadata:
+### Processing Steps:
 
-| Column            | Purpose                                 |
-| ----------------- | --------------------------------------- |
-| `src_region_file` | Region of the record based on file name |
-| `snapshot_day`    | Day number extracted from file name     |
-| `src_file`        | Specific CSV file name                  |
+1. Automatically detect ZIP files
+2. Extract all CSVs
+3. Identify region from ZIP file name
+4. Extract **snapshot day** from CSV file name
+5. Add metadata columns:
 
-This results in a single consolidated **multi-region, multi-day dataset**, ready for cleaning.
+| Column            | Description                         |
+| ----------------- | ----------------------------------- |
+| `src_region_file` | Region derived from ZIP name        |
+| `snapshot_day`    | Day number extracted from file name |
+| `src_file`        | Actual CSV file name                |
 
----
-
-**3. Step 2 — Data Cleaning & Standardization**
-
-Since each region may have different column names, formats, or delimiters, **cleaning is critical**.
-
- ✔ **Delimiter Detection**
-
-Each CSV may use:
-`,`, `|`, `;`, `\t`
-
-We auto-detect the correct separator.
-
-### ✔ **Column Standardization to 26 Canonical Columns**
-
-We map and create all required 26 fields, including:
-
-* Customer: ID, Name, Segment, Marital Status, Gender, DOB
-* Policy: ID, Type, Term, Start/End Dates, Premium
-* Address: Country, Region, State, City, Postal Code
-* Financial: Total Policy Amount, Premium Paid Till Date
-
-### ✔ **Data Cleaning Performed**
-
-| Cleaning Step                    | Purpose                                                                            |
-| -------------------------------- | ---------------------------------------------------------------------------------- |
-| **Whitespace normalization**     | Removes inconsistent spaces/tabs from text fields                                  |
-| **Case standardization**         | Lowercase/trim for uniformity                                                      |
-| **Date parsing**                 | Convert all date fields to proper datetime format                                  |
-| **Numeric coercion**             | Ensure numeric fields (premium, amount) are valid numbers                          |
-| **Customer Name reconstruction** | If a file contains First/Middle/Last but not "Customer Name", we rebuild correctly |
-| **Missing column creation**      | Any missing canonical column is added with NaN                                     |
-| **Removal of invalid rows**      | Remove rows missing `Customer ID` or `Policy_Id`                                   |
-| **Deduplication**                | Remove exact duplicates                                                            |
-
-### Outcome:
-
-A fully cleaned, standardized dataset with **consistent schema across all regions and all days**.
+This produces a single consolidated **multi-region, multi-day dataset**.
 
 ---
 
-## **4. Step 3 — Data Warehouse Construction**
+# 3. Step 2 — Data Cleaning & Standardization
 
-We now convert the cleaned dataset into a **proper dimensional model** with surrogate keys and historical tracking.
+Raw files differ by region, structure, delimiter and naming.
+We standardize everything into **26 canonical columns** as required.
 
-### **4.1 Surrogate Keys (SKs)**
+### Major Cleaning Steps
 
-We do not use natural IDs directly.
-Instead, we generate SKs using `pd.factorize()`, which ensures:
+| Cleaning Step                | Purpose                                          |
+| ---------------------------- | ------------------------------------------------ |
+| Auto delimiter detection     | Handle inconsistent separators                   |
+| Column normalization         | Removes extra spaces, fixes naming variations    |
+| Canonical column alignment   | Ensures exact 26 required fields                 |
+| Customer Name reconstruction | Build Full Name if only First/Middle/Last exist  |
+| Date parsing                 | Convert to clean datetime format                 |
+| Numeric parsing              | Convert premium + amount fields to numeric       |
+| Missing column creation      | Add missing canonical columns with nulls         |
+| Row validation               | Remove rows missing `Customer ID` or `Policy ID` |
+| Deduplication                | Remove duplicates across regions/days            |
 
-* Integer keys
-* Consistent ordering
-* Compact dimensions
+### Result:
 
-Example:
+A **clean, uniform, validated dataset** that is ready for Data Warehouse loading.
+
+---
+
+# 4. Step 3 — Data Warehouse (Star Schema)
+
+The core of the project is the **Star Schema**, designed to support analytical queries efficiently and professionally.
+
+Below is the structure:
+
+---
+
+## Fact Table + Four Dimensions
 
 ```
-customer_sk, policy_sk, policy_type_sk, address_sk
+                dim_customer (SCD2)
+                       |
+                       |
+dim_policy_type -- fact_transactions -- dim_policy (SCD2)
+                       |
+                       |
+                 dim_address (Hash NK)
 ```
 
 ---
 
-## **4.2 SCD Type-2 Dimensions (Slowly Changing Dimension)**
+# 5. Dimension Tables (Detailed)
 
-We maintain history of **Customer** and **Policy** attributes across days.
+## 5.1 dim_customer (SCD Type-2)
 
-### **How SCD Type-2 Works Here**
-
-For each entity (customer or policy):
-
-1. Sort by `snapshot_day`
-2. Convert all tracked fields to string
-3. Generate a **hash** for the combination of tracked fields
-4. Compare with the previous snapshot
-5. If hash differs → values changed → **create new version**
-6. Assign:
-
-   * `start_day`
-   * `end_day` (next version’s start_day)
-   * `is_current`
-
-### **Why use hashing?**
-
-Because it reliably detects changes across multiple columns without manually comparing each field.
-
----
-
-## **4.3 Dimensions Created**
-
-### **a) dim_customer (SCD2)**
-
-Tracks changes in:
+Tracks historical changes in:
 
 * customer_name
 * customer_segment
@@ -140,188 +115,218 @@ Tracks changes in:
 * gender
 * dob
 
-### **b) dim_policy (SCD2)**
+### Columns:
 
-Tracks changes in:
+| Column             | Description                               |
+| ------------------ | ----------------------------------------- |
+| customer_sk        | Surrogate key (unique version ID)         |
+| customer_id        | Natural ID from source system             |
+| Tracked attributes | Name, segment, marital status, etc.       |
+| start_day          | Version start snapshot                    |
+| end_day            | Version end snapshot                      |
+| is_current         | Whether this record is the latest version |
 
-* policy_name
+### Logic:
+
+A hash is generated from tracked fields.
+If today’s hash ≠ yesterday’s hash → customer attributes changed → new SCD2 version created.
+
+---
+
+## 5.2 dim_policy (SCD Type-2)
+
+Policy attributes may change across snapshot days, such as:
+
 * policy_term
-* policy_start_dt / policy_end_dt
-* premium_amt
+* policy_name
 * policy_type
+* premium_amt
+* start/end dates
 
-### **c) dim_policy_type**
-
-Static dimension.
-
-### **d) dim_address (Hash NK)**
-
-Address_NK is generated using MD5 hash:
+### Natural Key:
 
 ```
-MD5(customer_id | country | region | state | city | postal_code)
+policy_nk = src_region_file + "|" + policy_id
 ```
 
-This ensures:
+(prevents collisions across regions)
+
+### SCD Logic:
+
+Same hashing technique as dim_customer.
+
+---
+
+## 5.3 dim_policy_type (Static Dimension)
+
+Stores:
+
+* policy_type_id
+* policy_type
+* policy_type_desc
+
+Referenced from both `dim_policy` and `fact_transactions`.
+
+---
+
+## 5.4 dim_address (Hash-Based Natural Key)
+
+Address consists of multiple fields:
+
+```
+customer_id  
+country  
+region  
+state_or_province  
+city  
+postal_code
+```
+
+We compute:
+
+```
+address_nk = MD5(customer_id|country|region|state|city|postal_code)
+```
+
+Then generate:
+
+```
+address_sk = surrogate key
+```
+
+This method guarantees:
 
 * Uniqueness
-* Consistency
-* Fast joins
+* Stability
+* Efficient joins
 
 ---
 
-## **4.4 Fact Table: fact_transactions**
+# 6. Fact Table — fact_transactions
 
-Contains:
+This table represents the **daily snapshot** of every active policy.
 
-* customer_sk
-* policy_sk
-* policy_type_sk
-* address_sk
-* total_policy_amt
-* premium_amt
-* premium_paid_tilldate
-* next_premium_dt
-* actual_premium_paid_dt
-* snapshot_day
+### Columns:
 
-This table stores the **state of each policy snapshot** per day.
-
----
-
----
-
-# **5. Step 4 — Analytical Queries (b–f)**
-
-After building the DWH, we solved the business queries provided in the problem statement.
+| Column                    | Purpose                   |
+| ------------------------- | ------------------------- |
+| fact_sk                   | Primary key               |
+| snapshot_day              | Day number for daily view |
+| src_region_file           | Source region             |
+| customer_sk               | Linked to dim_customer    |
+| policy_sk                 | Linked to dim_policy      |
+| policy_type_sk            | Linked to dim_policy_type |
+| address_sk                | Linked to dim_address     |
+| total_policy_amt          | Measures                  |
+| premium_amt               | Measures                  |
+| premium_amt_paid_tilldate | Measures                  |
+| next_premium_dt           | Date measure              |
+| actual_premium_paid_dt    | Date measure              |
 
 ---
 
-## **(b) Customers Who Changed Policy Type**
+# 7. Step 4 — Running Analytical Queries (b–f)
 
-### Approach:
+Using the Star Schema, the required business queries are easily solved.
 
-* Build customer-day snapshots
-* Identify latest policy type
-* Scan backwards to find previous different policy type
+---
 
-### Output:
+## (b) Customers Who Changed Policy Type
 
-Shows for each customer:
+Uses:
 
-* Previous Policy Type
-* Current Policy Type
-* Policy Type ID and Description
+* dim_policy (SCD2)
+* fact_transactions (policy snapshots)
 
-This detects transitions like:
+Logic:
+
+* For each customer, determine the latest policy type
+* Scan historical snapshots backward
+* Identify the **most recent different** policy type
+* Produce **previous vs current** policy type report
+
+---
+
+## (c) Total Policy Amount by All Customers
+
+Using:
 
 ```
-Life → Auto
-Health → Life
+fact_transactions.total_policy_amt
+GROUP BY customer_sk
 ```
 
----
-
-## **(c) Total Policy Amount by All Customers**
-
-Using the latest snapshot per policy:
-
-* Group by customer
-* Sum `total_policy_amt`
-* Add `Region = 'All'`
-
-This gives the total exposure per customer.
+Outputs customer-level total policy exposure.
 
 ---
 
-## **(d) Total Policy Amount for Auto Policies**
+## (d) Total Policy Amount for Auto Policy Type
 
-Same as (c) but filter:
+Filter:
 
 ```
 policy_type = 'Auto'
 ```
 
-Used to analyze performance of Auto portfolio.
+Then run same aggregation as (c).
 
 ---
 
-## **(e) East & West Customers with Quarterly Term in 2012**
+## (e) East & West Customers, Quarterly Policies, Year 2012
 
-Filter criteria:
+Filters:
 
-* region = East or West
-* policy_term = Quarterly
-* policy_start_year = 2012
+* dim_address.region IN (East, West)
+* dim_policy.policy_term = 'Quarterly'
+* dim_policy.policy_start_dt.year = 2012
 
-Then group & compute:
+Outputs:
 
 * Earliest policy start date
-* Total policy amount
+* Sum of total_policy_amt
 
 ---
 
-## **(f) Customers Whose Marital Status Changed**
+## (f) Customers Whose Marital Status Changed
 
-We track marital_status across days using SCD-like logic:
+Using SCD2 in dim_customer:
 
-* When status changes → close old record
-* Next record starts new range
-* Last record ends at **2099-12-31**
+* Each SCD version has a start_day, end_day
+* When marital_status changes → new version
+* Last version ends at 2099-12-31
 
-Output includes:
-
-* Start_Dt_Marital_Status
-* End_Dt_Marital_Status
-* Marital status for each time window
+Outputs full timeline of marital status changes.
 
 ---
 
-# **6. Directory Outputs**
+# 8. Output Files
 
-### **Data Warehouse Outputs**
-
-Located in:
+### Data Warehouse Outputs
 
 ```
-/content/output_insurance_dwh/
+dim_customer.csv
+dim_address.csv
+dim_policy.csv
+dim_policy_type.csv
+fact_transactions.csv
+merged_clean_26cols.csv
 ```
 
-Files:
+### Analytical Query Outputs (b–f)
 
-* dim_customer.csv
-* dim_address.csv
-* dim_policy.csv
-* dim_policy_type.csv
-* fact_transactions.csv
-* merged_clean_26cols.csv
+```
+q2_b_policy_type_changed.csv
+q2_c_total_policy_amt_all.csv
+q2_d_total_policy_amt_auto.csv
+q2_e_east_west_quarterly_2012.csv
+q2_f_marital_status_changed.csv
+```
 
 ---
 
-### **Analytical Query Outputs**
+# 9. Final Hackathon Summary 
 
-Located in:
+**“We ingested four regional ZIPs, standardized all daily files into a clean 26-column schema, applied rigorous data quality rules, and built a full Star Schema Data Warehouse.
+Using surrogate keys, MD5 hash keys, and SCD Type-2, we preserved history for both customers and policies.
+From this warehouse, we delivered all business query outputs (b–f) accurately and efficiently.”**
 
-```
-/content/q2_outputs/
-```
-
-Files:
-
-* q2_b_policy_type_changed.csv
-* q2_c_total_policy_amt_all.csv
-* q2_d_total_policy_amt_auto.csv
-* q2_e_east_west_quarterly_2012.csv
-* q2_f_marital_status_changed.csv
-
----
-
-# **7. Summary (Use This in Your Hackathon Presentation)**
-
-**“We ingested four regional ZIP files, merged and cleaned all CSVs into a uniform 26-column schema, and built a full enterprise-grade Data Warehouse.
-We used surrogate keys and hash-based SCD Type-2 to track historical changes for customers and policies.
-Finally, using this DWH, we delivered all required analytical reports (b–f) accurately and efficiently.”**
-
-
-
-Just tell me!
